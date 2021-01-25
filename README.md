@@ -19,3 +19,13 @@ react에서 다양한 아이콘을 사용하기 위해
 ```
 yarn add react-icons
 ```
+
+styled-components
+
+```
+yarn add styled-components
+```
+
+## 완성!!
+
+![Complete](./image/complete.png)
