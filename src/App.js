@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from "react";
+import React, { useCallback, useReducer, useRef } from "react";
 import TodoInsert from "./Component/TodoInsert";
 import TodoItemList from "./Component/TodoItemList";
 import TodoTemplate from "./Component/TodoTemplate";
@@ -12,14 +12,7 @@ const reducer = (state, action) => {
     });
   } else if (action.type === "UPDATE") {
     return state.map((item) => {
-      if (item.id === action.id) {
-        if (item.checked === true) {
-          item.checked = false;
-        } else {
-          item.checked = true;
-        }
-      }
-      return item;
+      return item.id === action.id ? { ...item, checked: !item.checked } : item;
     });
   } else if (action.type === "DEL") {
     return state.filter((item) => {
@@ -52,6 +45,7 @@ const ItemContainer = {
 
 function App() {
   const initVal = loadLocalStorage();
+  //const initVal = "";
   let nextNum = 0;
   if (initVal !== "") {
     const idList = initVal.map((item) => item.id);
@@ -63,7 +57,7 @@ function App() {
 
   setLocalStorage(state);
 
-  const onClickTodoAdd = (text) => {
+  const onClickTodoAdd = useCallback((text) => {
     const data = {
       type: "ADD",
       id: nextId.current,
@@ -72,21 +66,23 @@ function App() {
     };
     nextId.current += 1;
     dispatch(data);
-  };
-  const onClickTodoDel = (id) => {
+  }, []);
+
+  const onClickTodoDel = useCallback((id) => {
     const data = {
       id,
       type: "DEL",
     };
     dispatch(data);
-  };
-  const onClickTodoComplete = (id) => {
+  }, []);
+
+  const onClickTodoComplete = useCallback((id) => {
     const data = {
       id,
       type: "UPDATE",
     };
     dispatch(data);
-  };
+  }, []);
 
   const drawItemList = () => {
     return state.map((item) => {

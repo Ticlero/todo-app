@@ -86,4 +86,4 @@ function TodoItemList({ item, onClickTodoDel, onClickTodoComplete }) {
   );
 }
 
-export default TodoItemList;
+export default React.memo(TodoItemList);
